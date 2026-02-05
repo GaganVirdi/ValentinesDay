@@ -90,9 +90,6 @@
         .confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
         @keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
 
-        /* Hidden YouTube player */
-        #player { display: none; }
-    
         /* Mute button */
         #muteBtn {
             position: fixed;
@@ -149,37 +146,21 @@
 
 </div>
 
-<button id="muteBtn">🔇</button>
+<button id="muteBtn">🔊</button>
 
-<!-- Hidden YouTube player container -->
-<div id="player"></div>
-
-<!-- YouTube IFrame API -->
-<script src="https://www.youtube.com/iframe_api">
-    // Mute / Unmute toggle
-    const muteBtn = document.getElementById("muteBtn");
-
-    muteBtn.addEventListener("click", () => {
-        if (!player) return;
-
-        if (isMuted) {
-            player.unMute();
-            muteBtn.textContent = "🔊";
-            isMuted = false;
-        } else {
-            player.mute();
-            muteBtn.textContent = "🔇";
-            isMuted = true;
-        }
-    });
-
-</script>
+<!-- Background Music -->
+<audio id="bgMusic" src="Song.mp3" preload="auto" loop></audio>
 
 <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const message = document.getElementById("message");
     const readMoreBtn = document.getElementById("readMoreBtn");
+    const bgMusic = document.getElementById("bgMusic");
+    const muteBtn = document.getElementById("muteBtn");
+
+    let musicStarted = false;
+    let isMuted = false;
 
     const reconsiderMessages = [
         "Wait what?? Are you sure? 😟",
@@ -191,30 +172,6 @@
     ];
 
     let noClickCount = 0;
-    let player;
-    let musicStarted = false;
-    let isMuted = false;
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '0',
-            width: '0',
-            videoId: 'p5EeJ9bHAOI',
-            playerVars: {
-                autoplay: 0,
-                controls: 0,
-                disablekb: 1,
-                fs: 0,
-                iv_load_policy: 3,
-                modestbranding: 1,
-                playsinline: 1
-            },
-            events: {
-                onReady: onPlayerReady,
-                onStateChange: onPlayerStateChange
-            }
-        });
-    }
 
     function createHeart() {
         const heart = document.createElement("div");
@@ -271,16 +228,27 @@
             el.style.animationDelay = `${i * 0.4}s`;
         });
 
-        // ▶️ Start music ONLY once
-        if (player && !musicStarted) {
+        if (!musicStarted) {
             musicStarted = true;
-            player.seekTo(153, true);
-            player.unMute();
-            player.setVolume(60);
-            player.playVideo();
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(() => {});
+            muteBtn.style.display = "block";
+        }
+    });
 
-            // show mute button after music starts
-            document.getElementById("muteBtn").style.display = "block";
+    muteBtn.addEventListener("click", () => {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            muteBtn.textContent = "🔊";
+            isMuted = false;
+        } else if (isMuted) {
+            bgMusic.muted = false;
+            muteBtn.textContent = "🔊";
+            isMuted = false;
+        } else {
+            bgMusic.muted = true;
+            muteBtn.textContent = "🔇";
+            isMuted = true;
         }
     });
 </script>
