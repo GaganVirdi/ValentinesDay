@@ -1,136 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Read More</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine ❤️</title>
 
-  <style>
-    body {
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      overflow-x: hidden;
-    }
+    <style>
+        * { box-sizing: border-box; }
 
-    .fade {
-      animation: fadeIn 1.5s ease-in-out;
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 16px;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+        .card {
+            background: white;
+            padding: 32px 24px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 420px;
+        }
 
-    .slideshow {
-      position: relative;
-      width: 100%;
-      max-width: 360px;
-      height: 360px;
-      margin: 0 auto;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+        h1 {
+            margin-bottom: 20px;
+            color: #ff4d6d;
+            font-size: 24px;
+            line-height: 1.3;
+        }
 
-    .slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
+        .gif {
+            width: 100%;
+            max-width: 220px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+        }
 
-    .slide.active {
-      opacity: 1;
-    }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
 
-    .slide img,
-    .slide video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        button {
+            padding: 12px 22px;
+            font-size: 16px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+        }
 
-    #muteBtn {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 1000;
-    }
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #adb5bd; color: white; }
 
-    #muteBtn svg {
-      width: 22px;
-      height: 22px;
-      fill: #333;
-    }
-  </style>
+        #message { display: none; margin-top: 24px; color: #ff4d6d; font-size: 20px; }
+
+        #readMoreSection { 
+            display: none; 
+            text-align: left; 
+            color: #444; 
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #readMoreSection.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-text {
+            opacity: 0;
+            animation: fadeText 2s ease forwards;
+        }
+
+        @keyframes fadeText { to { opacity: 1; } }
+
+        .heart { position: fixed; bottom: -20px; font-size: 42px; animation: floatUp 3.5s linear forwards; }
+        @keyframes floatUp { to { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
+
+        .confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
+        @keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        /* Slideshow */
+        .slideshow {
+            width: 100%;
+            height: 240px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .slide.active { opacity: 1; }
+
+        /* Mute button */
+        #muteBtn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: #ffffff;
+            color: #ff4d6d;
+            border: 2px solid #ff4d6d;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            display: none;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center px-4 text-center">
+<body>
 
-  <audio id="bgMusic" loop preload="auto">
-    <source src="Song.mp3" type="audio/mpeg" />
-  </audio>
+<div class="card">
 
-  <div id="muteBtn" onclick="toggleMute()"></div>
+    <div id="page1">
+        <h1>Ms. Suhasini Raina, will you be my Valentine? 💖</h1>
 
-  <div class="fade space-y-6">
-    <h1 class="text-3xl font-bold text-pink-700">Just a few memories ❤️</h1>
+        <img id="mainGif" src="https://github.com/CodeKageHQ/Ask-out-your-Valentine/blob/main/images/image1.gif?raw=true" class="gif">
 
-    <div class="slideshow" id="slideshow">
-      <div class="slide active">
-        <img src="https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif" />
-      </div>
-      <div class="slide">
-        <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" />
-      </div>
-      <div class="slide">
-        <img src="https://media.giphy.com/media/xUPGcguWZHRC2HyBRS/giphy.gif" />
-      </div>
+        <div class="buttons">
+            <button id="yesBtn">YES 💕</button>
+            <button id="noBtn">NO 🙈</button>
+        </div>
+
+        <div id="message">
+            YAAAYYYYY 😘❤️<br>I knew it. I never had a doubt.<br><br>
+            <button id="readMoreBtn">Read more 💌</button>
+        </div>
     </div>
 
-    <p class="text-lg text-gray-700 max-w-md mx-auto">
-      Every picture, every moment, every smile — they all mean more than words.
-    </p>
-  </div>
+    <div id="readMoreSection">
 
-  <script>
-    const audio = document.getElementById('bgMusic');
-    const muteBtn = document.getElementById('muteBtn');
+        <!-- Slideshow -->
+        <div class="slideshow" id="slideshow">
+            <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" class="slide active">
+            <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" class="slide">
+            <video class="slide" muted loop>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            </video>
+        </div>
 
-    audio.volume = 0.7;
-    audio.play().then(() => {
-      muteBtn.style.display = 'flex';
-      updateIcon();
-    }).catch(() => {});
+        <h1>Happy Valentine’s Day ❤️</h1>
 
-    function toggleMute() {
-      audio.muted = !audio.muted;
-      updateIcon();
+        <p>
+            Happy (official) first Valentine’s Day! Since this is our big February 14th debut and I can’t be there to hand-deliver a card or annoy you in person, I had to do something a little hattke. Consider this my digital placeholder until I can get to you.
+        </p>
+
+        <p>
+            Happy Valentine’s Day to the girl who somehow makes my life a whole lot better and my screen time a whole lot higher. I’m honestly so glad we finally decided to start dating after basically the whole world had already decided we were a couple. For once, I’m glad we actually listened to the rumors! 😛
+        </p>
+
+        <p>
+            Since I can’t take you out tonight, I’m officially pre-booking my spot for our "Redemption Date." To make sure everything is perfect, please fill out the following Valentine’s Requisition Form so I can plan a day filled with your favorite food and way too much of my attention.
+        </p>
+    </div>
+
+</div>
+
+<button id="muteBtn">🔈</button>
+
+<audio id="bgMusic" src="Song.mp3" preload="auto" loop></audio>
+
+<script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const message = document.getElementById("message");
+    const readMoreBtn = document.getElementById("readMoreBtn");
+    const bgMusic = document.getElementById("bgMusic");
+    const muteBtn = document.getElementById("muteBtn");
+
+    let musicStarted = false;
+    let isMuted = false;
+
+    const reconsiderMessages = [
+        "Wait what?? Are you sure? 😟",
+        "Are you REALLY sure? 😳",
+        "Are you REALLY REALLY sure? 🥺",
+        "Pakka? Fir se soch le? 🙈",
+        "Akhri baar puch rha hu. Maan ja? ❤️",
+        "Huh. Ab toh you're just being mean. 😤"
+    ];
+
+    let noClickCount = 0;
+
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
     }
 
-    function updateIcon() {
-      muteBtn.innerHTML = audio.muted
-        ? `<svg viewBox="0 0 24 24"><path d="M16.5 12l4.5 4.5-1.5 1.5L15 13.5l-4.5 4.5H7v-5.25L3.75 9.75H7V4.5h3.5L15 9l4.5-4.5 1.5 1.5z"/></svg>`
-        : `<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
+    function startHearts() {
+        const interval = setInterval(createHeart, 300);
+        setTimeout(() => clearInterval(interval), 4000);
     }
 
-    const slides = document.querySelectorAll('.slide');
-    let index = 0;
+    function createConfetti() {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2", "#ef476f"][Math.floor(Math.random() * 5)];
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+    }
 
-    setInterval(() => {
-      slides[index].classList.remove('active');
-      index = (index + 1) % slides.length;
-      slides[index].classList.add('active');
-    }, 4000);
-  </script>
+    function startConfetti() {
+        const interval = setInterval(createConfetti, 120);
+        setTimeout(() => clearInterval(interval), 4000);
+    }
+
+    yesBtn.addEventListener("click", () => {
+        document.getElementById("mainGif").src = "https://aayush-683.github.io/will-you-be-my-valentine/public/images/yes.gif";
+        message.style.display = "block";
+        document.querySelector(".buttons").style.display = "none";
+        startHearts();
+        startConfetti();
+    });
+
+    noBtn.addEventListener("click", () => {
+        document.getElementById("mainGif").src = "https://aayush-683.github.io/will-you-be-my-valentine/public/images/no.gif";
+        if (noClickCount < reconsiderMessages.length) {
+            noBtn.textContent = reconsiderMessages[noClickCount++];
+        }
+    });
+
+    readMoreBtn.addEventListener("click", () => {
+        document.getElementById("page1").style.display = "none";
+
+        const section = document.getElementById("readMoreSection");
+        section.style.display = "block";
+        setTimeout(() => section.classList.add("show"), 50);
+
+        section.querySelectorAll("p, label, h2").forEach((el, i) => {
+            el.classList.add("fade-text");
+            el.style.animationDelay = `${i * 0.4}s`;
+        });
+
+        if (!musicStarted) {
+            musicStarted = true;
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(() => {});
+            muteBtn.style.display = "block";
+            startSlideshow();
+        }
+    });
+
+    muteBtn.addEventListener("click", () => {
+        if (isMuted) {
+            bgMusic.muted = false;
+            muteBtn.textContent = "🔊";
+            isMuted = false;
+        } else {
+            bgMusic.muted = true;
+            muteBtn.textContent = "🔇";
+            isMuted = true;
+        }
+    });
+
+    /* Slideshow logic */
+    function startSlideshow() {
+        const slides = document.querySelectorAll("#slideshow .slide");
+        let index = 0;
+
+        setInterval(() => {
+            slides[index].classList.remove("active");
+
+            if (slides[index].tagName === "VIDEO") {
+                slides[index].pause();
+            }
+
+            index = (index + 1) % slides.length;
+
+            slides[index].classList.add("active");
+
+            if (slides[index].tagName === "VIDEO") {
+                slides[index].currentTime = 0;
+                slides[index].play();
+            }
+        }, 3000);
+    }
+</script>
 
 </body>
 </html>
