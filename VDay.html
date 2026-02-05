@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
+    <title>Be My Valentine ❤️</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             min-height: 100vh;
@@ -28,21 +26,25 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             width: 100%;
-            max-width: 380px;
+            max-width: 420px;
         }
 
         h1 {
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             color: #ff4d6d;
             font-size: 24px;
             line-height: 1.3;
         }
 
+        .gif {
+            width: 100%;
+            max-width: 220px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+        }
+
         .buttons {
-            position: relative;
-            height: auto;
             display: flex;
-            align-items: center;
             justify-content: center;
             gap: 16px;
             margin-top: 10px;
@@ -54,105 +56,180 @@
             border: none;
             border-radius: 999px;
             cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
-        button:active {
-            transform: scale(0.95);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #adb5bd; color: white; }
+
+        #message { display: none; margin-top: 24px; color: #ff4d6d; font-size: 20px; }
+
+        /* SECOND PAGE CONTENT */
+        #readMoreSection { display: none; text-align: left; color: #444; }
+
+        .questionnaire { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; }
+        .questionnaire h2 { color: #ff4d6d; font-size: 18px; margin-bottom: 12px; text-align: center; }
+
+        label { display: block; margin-top: 12px; font-weight: bold; }
+
+        input[type="date"], input[type="time"] {
+            width: 100%; padding: 8px; margin-top: 6px; border-radius: 8px; border: 1px solid #ccc;
         }
 
-        #yesBtn {
-            background-color: #ff4d6d;
-            color: white;
-            margin-right: 12px;
+        .options label { font-weight: normal; margin-top: 6px; }
+
+        /* Hearts */
+        .heart { position: fixed; bottom: -20px; font-size: 42px; animation: floatUp 3.5s linear forwards; }
+        @keyframes floatUp { to { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
+
+        .confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
+        @keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+    
+        /* Fade transition */
+        #readMoreSection {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        #noBtn {
-            background-color: #adb5bd;
-            color: white;
-            position: relative;
+        #readMoreSection.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .gif {
-            width: 100%;
-            max-width: 220px;
-            margin-bottom: 20px;
-            border-radius: 16px;
+        /* Slow appearing text */
+        .fade-text {
+            opacity: 0;
+            animation: fadeText 2s ease forwards;
         }
 
-        #message {
-            margin-top: 24px;
-            font-size: 20px;
-            color: #ff4d6d;
-            display: none;
-        }
-
-        /* Extra small devices */
-        @media (max-width: 360px) {
-            h1 {
-                font-size: 20px;
-            }
-
-            button {
-                font-size: 14px;
-                padding: 10px 18px;
-            }
-
-            #message {
-                font-size: 18px;
-            }
+        @keyframes fadeText {
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    Suhasini, will you be my Valentine\? 💖
 
-    <img src="https://github.com/CodeKageHQ/Ask-out-your-Valentine/blob/main/images/image1.gif?raw=true" alt="Cute hearts" class="gif">
+    <!-- PAGE 1 -->
+    <div id="page1">
+        <h1>Ms. Suhasini Raina, will you be my Valentine? 💖</h1>
 
-    <div class="buttons">
-        <button id="yesBtn">Yes 💕</button>
-        <button id="noBtn">No 🙈</button>
+        <img id="mainGif" src="https://github.com/CodeKageHQ/Ask-out-your-Valentine/blob/main/images/image1.gif?raw=true" class="gif">
+
+        <div class="buttons">
+            <button id="yesBtn">YES 💕</button>
+            <button id="noBtn">NO 🙈</button>
+        </div>
+
+        <div id="message">
+            YAAAYYYYY 😘❤️<br>I knew it. I never had a doubt.<br><br>
+            <button id="readMoreBtn">Read more 💌</button>
+        </div>
     </div>
 
-    <div id="message">
-        Yaaay! ❤️<br>
-        I knew you’d say yes 😘
+    <!-- PAGE 2 -->
+    <div id="readMoreSection">
+        <h1>Happy Valentine’s Day ❤️</h1>
+
+        <p>
+            Happy (official) first Valentine’s Day! Since this is our big February 14th debut and I can’t be there to hand-deliver a card or annoy you in person, I had to do something a little hattke. Consider this my digital placeholder until I can get to you.
+            Happy Valentine’s Day to the girl who somehow makes my life a whole lot better and my screen time a whole lot higher. I’m honestly so glad we finally decided to start dating after basically the whole world had already decided we were a couple. For once, I’m glad we actually listened to the rumors! 😛
+            Since I can’t take you out tonight, I’m officially pre-booking my spot for our "Redemption Date." To make sure everything is perfect, please fill out the following Valentine’s Requisition Form so I can plan a day filled with your favorite food and way too much of my attention.
+        </p>
+
+        <div class="questionnaire">
+            <h2>Valentine’s Requisition Form 💌</h2>
+
+            <label>1. When would you like to go out for our Valentine's Day date?</label>
+            <input type="date"><input type="time">
+
+            <label>2. What would you like to have?</label>
+            <div class="options">
+                <label><input type="radio" name="food"> Street food</label>
+                <label><input type="radio" name="food"> Tea/Coffee + Dessert</label>
+                <label><input type="radio" name="food"> Breakfast/Lunch/Dinner</label>
+                <label><input type="radio" name="food"> Picnic at Lodhi Garden</label>
+            </div>
+        </div>
     </div>
+
 </div>
 
 <script>
-    const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
     const message = document.getElementById("message");
+    const readMoreBtn = document.getElementById("readMoreBtn");
 
-    function moveNoButton() {
-        const card = document.querySelector(".card");
-        const cardRect = card.getBoundingClientRect();
+    const reconsiderMessages = [
+        "Wait what?? Are you sure? 😟",
+        "Are you REALLY sure? 😳",
+        "Are you REALLY REALLY sure? 🥺",
+        "Pakka? Fir se soch le? 🙈",
+        "Akhri baar puch rha hu. Maan ja? ❤️",
+        "Huh. Ab toh you're just being mean. 😤"
+    ];
 
-        const maxX = cardRect.width - noBtn.offsetWidth;
-        const maxY = cardRect.height - noBtn.offsetHeight;
+    let noClickCount = 0;
 
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
-
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
     }
 
-    // Desktop hover
-    noBtn.addEventListener("mouseover", moveNoButton);
+    function startHearts() {
+        const interval = setInterval(createHeart, 300);
+        setTimeout(() => clearInterval(interval), 4000);
+    }
 
-    // Mobile touch
-    noBtn.addEventListener("touchstart", function (e) {
-        e.preventDefault();
-        moveNoButton();
-    });
+    function createConfetti() {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2", "#ef476f"][Math.floor(Math.random() * 5)];
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+    }
+
+    function startConfetti() {
+        const interval = setInterval(createConfetti, 120);
+        setTimeout(() => clearInterval(interval), 4000);
+    }
 
     yesBtn.addEventListener("click", () => {
+        document.getElementById("mainGif").src = "https://aayush-683.github.io/will-you-be-my-valentine/public/images/yes.gif";
         message.style.display = "block";
+        document.querySelector(".buttons").style.display = "none";
+        startHearts();
+        startConfetti();
+    });
+
+    noBtn.addEventListener("click", () => {
+        document.getElementById("mainGif").src = "https://aayush-683.github.io/will-you-be-my-valentine/public/images/no.gif";
+        if (noClickCount < reconsiderMessages.length) {
+            noBtn.textContent = reconsiderMessages[noClickCount++];
+        }
+    });
+
+    readMoreBtn.addEventListener("click", () => {
+        document.getElementById("page1").style.display = "none";
+
+        const section = document.getElementById("readMoreSection");
+        section.style.display = "block";
+
+        // trigger smooth fade
+        setTimeout(() => section.classList.add("show"), 50);
+
+        // animate inner text
+        section.querySelectorAll("p, label, h2").forEach((el, i) => {
+            el.classList.add("fade-text");
+            el.style.animationDelay = `${i * 0.4}s`;
+        });
     });
 </script>
 
