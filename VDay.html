@@ -155,6 +155,7 @@
 
     let noClickCount = 0;
     let player;
+    let musicStarted = false;
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -162,13 +163,17 @@
             width: '0',
             videoId: 'p5EeJ9bHAOI',
             playerVars: {
-                start: 153,
                 autoplay: 0,
                 controls: 0,
-                loop: 1,
-                playlist: 'p5EeJ9bHAOI',
-                mute: 1,
+                disablekb: 1,
+                fs: 0,
+                iv_load_policy: 3,
+                modestbranding: 1,
                 playsinline: 1
+            },
+            events: {
+                onReady: onPlayerReady,
+                onStateChange: onPlayerStateChange
             }
         });
     }
@@ -221,7 +226,6 @@
 
         const section = document.getElementById("readMoreSection");
         section.style.display = "block";
-
         setTimeout(() => section.classList.add("show"), 50);
 
         section.querySelectorAll("p, label, h2").forEach((el, i) => {
@@ -229,8 +233,10 @@
             el.style.animationDelay = `${i * 0.4}s`;
         });
 
-        // ▶️ Play YouTube music after user interaction
-        if (player && player.playVideo) {
+        // ▶️ Start music ONLY once
+        if (player && !musicStarted) {
+            musicStarted = true;
+            player.seekTo(153, true);
             player.unMute();
             player.setVolume(60);
             player.playVideo();
