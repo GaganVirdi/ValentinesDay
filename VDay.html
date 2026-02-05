@@ -63,29 +63,10 @@
 
         #message { display: none; margin-top: 24px; color: #ff4d6d; font-size: 20px; }
 
-        /* SECOND PAGE CONTENT */
-        #readMoreSection { display: none; text-align: left; color: #444; }
-
-        .questionnaire { margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; }
-        .questionnaire h2 { color: #ff4d6d; font-size: 18px; margin-bottom: 12px; text-align: center; }
-
-        label { display: block; margin-top: 12px; font-weight: bold; }
-
-        input[type="date"], input[type="time"] {
-            width: 100%; padding: 8px; margin-top: 6px; border-radius: 8px; border: 1px solid #ccc;
-        }
-
-        .options label { font-weight: normal; margin-top: 6px; }
-
-        /* Hearts */
-        .heart { position: fixed; bottom: -20px; font-size: 42px; animation: floatUp 3.5s linear forwards; }
-        @keyframes floatUp { to { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
-
-        .confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
-        @keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-    
-        /* Fade transition */
-        #readMoreSection {
+        #readMoreSection { 
+            display: none; 
+            text-align: left; 
+            color: #444; 
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -96,22 +77,27 @@
             transform: translateY(0);
         }
 
-        /* Slow appearing text */
         .fade-text {
             opacity: 0;
             animation: fadeText 2s ease forwards;
         }
 
-        @keyframes fadeText {
-            to { opacity: 1; }
-        }
+        @keyframes fadeText { to { opacity: 1; } }
+
+        .heart { position: fixed; bottom: -20px; font-size: 42px; animation: floatUp 3.5s linear forwards; }
+        @keyframes floatUp { to { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
+
+        .confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
+        @keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        /* Hidden YouTube player */
+        #player { display: none; }
     </style>
 </head>
 <body>
 
 <div class="card">
 
-    <!-- PAGE 1 -->
     <div id="page1">
         <h1>Ms. Suhasini Raina, will you be my Valentine? 💖</h1>
 
@@ -128,33 +114,29 @@
         </div>
     </div>
 
-    <!-- PAGE 2 -->
     <div id="readMoreSection">
         <h1>Happy Valentine’s Day ❤️</h1>
 
         <p>
             Happy (official) first Valentine’s Day! Since this is our big February 14th debut and I can’t be there to hand-deliver a card or annoy you in person, I had to do something a little hattke. Consider this my digital placeholder until I can get to you.
-            Happy Valentine’s Day to the girl who somehow makes my life a whole lot better and my screen time a whole lot higher. I’m honestly so glad we finally decided to start dating after basically the whole world had already decided we were a couple. For once, I’m glad we actually listened to the rumors! 😛
-            Since I can’t take you out tonight, I’m officially pre-booking my spot for our "Redemption Date." To make sure everything is perfect, please fill out the following Valentine’s Requisition Form so I can plan a day filled with your favorite food and way too much of my attention.
         </p>
 
-        <div class="questionnaire">
-            <h2>Valentine’s Requisition Form 💌</h2>
+        <p>
+            Happy Valentine’s Day to the girl who somehow makes my life a whole lot better and my screen time a whole lot higher. I’m honestly so glad we finally decided to start dating after basically the whole world had already decided we were a couple. For once, I’m glad we actually listened to the rumors! 😛
+        </p>
 
-            <label>1. When would you like to go out for our Valentine's Day date?</label>
-            <input type="date"><input type="time">
-
-            <label>2. What would you like to have?</label>
-            <div class="options">
-                <label><input type="radio" name="food"> Street food</label>
-                <label><input type="radio" name="food"> Tea/Coffee + Dessert</label>
-                <label><input type="radio" name="food"> Breakfast/Lunch/Dinner</label>
-                <label><input type="radio" name="food"> Picnic at Lodhi Garden</label>
-            </div>
-        </div>
+        <p>
+            Since I can’t take you out tonight, I’m officially pre-booking my spot for our "Redemption Date." To make sure everything is perfect, please fill out the following Valentine’s Requisition Form so I can plan a day filled with your favorite food and way too much of my attention.
+        </p>
     </div>
 
 </div>
+
+<!-- Hidden YouTube player container -->
+<div id="player"></div>
+
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
     const yesBtn = document.getElementById("yesBtn");
@@ -172,6 +154,24 @@
     ];
 
     let noClickCount = 0;
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '0',
+            width: '0',
+            videoId: 'p5EeJ9bHAOI',
+            playerVars: {
+                start: 153,
+                autoplay: 0,
+                controls: 0,
+                loop: 1,
+                playlist: 'p5EeJ9bHAOI',
+                mute: 1,
+                playsinline: 1
+            }
+        });
+    }
 
     function createHeart() {
         const heart = document.createElement("div");
@@ -222,14 +222,19 @@
         const section = document.getElementById("readMoreSection");
         section.style.display = "block";
 
-        // trigger smooth fade
         setTimeout(() => section.classList.add("show"), 50);
 
-        // animate inner text
         section.querySelectorAll("p, label, h2").forEach((el, i) => {
             el.classList.add("fade-text");
             el.style.animationDelay = `${i * 0.4}s`;
         });
+
+        // ▶️ Play YouTube music after user interaction
+        if (player && player.playVideo) {
+            player.unMute();
+            player.setVolume(60);
+            player.playVideo();
+        }
     });
 </script>
 
