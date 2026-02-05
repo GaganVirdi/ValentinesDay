@@ -92,6 +92,23 @@
 
         /* Hidden YouTube player */
         #player { display: none; }
+    
+        /* Mute button */
+        #muteBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -132,11 +149,31 @@
 
 </div>
 
+<button id="muteBtn">🔇</button>
+
 <!-- Hidden YouTube player container -->
 <div id="player"></div>
 
 <!-- YouTube IFrame API -->
-<script src="https://www.youtube.com/iframe_api"></script>
+<script src="https://www.youtube.com/iframe_api">
+    // Mute / Unmute toggle
+    const muteBtn = document.getElementById("muteBtn");
+
+    muteBtn.addEventListener("click", () => {
+        if (!player) return;
+
+        if (isMuted) {
+            player.unMute();
+            muteBtn.textContent = "🔊";
+            isMuted = false;
+        } else {
+            player.mute();
+            muteBtn.textContent = "🔇";
+            isMuted = true;
+        }
+    });
+
+</script>
 
 <script>
     const yesBtn = document.getElementById("yesBtn");
@@ -156,6 +193,7 @@
     let noClickCount = 0;
     let player;
     let musicStarted = false;
+    let isMuted = false;
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -240,6 +278,9 @@
             player.unMute();
             player.setVolume(60);
             player.playVideo();
+
+            // show mute button after music starts
+            document.getElementById("muteBtn").style.display = "block";
         }
     });
 </script>
