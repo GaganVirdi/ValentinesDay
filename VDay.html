@@ -119,6 +119,7 @@ button {
         <div class="slideshow" id="slideshow"></div>
 
         <h1>Happy Valentine’s Day ❤️</h1>
+
         <p>Happy 1st Valentine’s Day to US! Since this is our big February 14th debut and I can’t be there to hand-deliver a card or annoy you in person, I had to do something a little hattke. Consider this my digital placeholder card until I can come see you.</p>
 
         <p>Happy Valentine’s Day to the girl who somehow makes my life a whole lot better, my screen time a whole lot higher and my FaceTimes a whole lot longer. I’m honestly so glad we finally decided to start dating after basically the whole world had already decided we were a couple. For once, I’m glad we actually listened to the rumors 😛</p>
@@ -129,7 +130,9 @@ button {
 
         <p>So here’s to our first official Valentine’s Day and to many more VDays where I will annoy you in person, let you steal my food (especially popcorn), make you laugh, and remind you how special you are to me.</p>
 
-        <p class="heart">I love you, Suhasini Raina ❤️</p>
+        <p style="text-align:center; font-size:22px; color:#ff4d6d; margin-top:16px;">
+            I love you, Suhasini Raina ❤️
+        </p>
     </div>
 </div>
 
@@ -143,7 +146,8 @@ const yesBtn = document.getElementById("yesBtn"),
       readMoreBtn = document.getElementById("readMoreBtn"),
       bgMusic = document.getElementById("bgMusic"),
       muteBtn = document.getElementById("muteBtn"),
-      slideshow = document.getElementById("slideshow");
+      slideshow = document.getElementById("slideshow"),
+      readMoreSection = document.getElementById("readMoreSection");
 
 let musicStarted = false, isMuted = false, noClickCount = 0;
 
@@ -157,27 +161,24 @@ const reconsiderMessages = [
     "Huh. Ab toh you're just being mean. 😤"
 ];
 
-// Create hearts/confetti
-function createHeart() { const h = document.createElement("div"); h.className="heart"; h.textContent="❤️"; h.style.left=Math.random()*100+"vw"; document.body.appendChild(h); setTimeout(()=>h.remove(),3000);}
-function startHearts(){const i=setInterval(createHeart,300); setTimeout(()=>clearInterval(i),4000);}
-function createConfetti(){const c=document.createElement("div"); c.className="confetti"; c.style.left=Math.random()*100+"vw"; c.style.backgroundColor=["#ff4d6d","#ffd166","#06d6a0","#118ab2","#ef476f"][Math.floor(Math.random()*5)]; document.body.appendChild(c); setTimeout(()=>c.remove(),3000);}
-function startConfetti(){const i=setInterval(createConfetti,120); setTimeout(()=>clearInterval(i),4000);}
+// Hearts & Confetti
+function createHeart(){const h=document.createElement("div");h.className="heart";h.textContent="❤️";h.style.left=Math.random()*100+"vw";document.body.appendChild(h);setTimeout(()=>h.remove(),3000);}
+function startHearts(){const i=setInterval(createHeart,300);setTimeout(()=>clearInterval(i),4000);}
+function createConfetti(){const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.backgroundColor=["#ff4d6d","#ffd166","#06d6a0","#118ab2","#ef476f"][Math.floor(Math.random()*5)];document.body.appendChild(c);setTimeout(()=>c.remove(),3000);}
+function startConfetti(){const i=setInterval(createConfetti,120);setTimeout(()=>clearInterval(i),4000);}
 
-// YES button
+// Buttons
 yesBtn.addEventListener("click", ()=>{
     document.getElementById("mainGif").src="https://aayush-683.github.io/will-you-be-my-valentine/public/images/yes.gif";
     message.style.display="block";
     document.querySelector(".buttons").style.display="none";
-    startHearts();
-    startConfetti();
+    startHearts(); startConfetti();
 });
 
-// NO button
 noBtn.addEventListener("click", ()=>{
     if(noClickCount<reconsiderMessages.length) noBtn.textContent=reconsiderMessages[noClickCount++];
 });
 
-// Read more button
 readMoreBtn.addEventListener("click", ()=>{
     document.getElementById("page1").style.display="none";
     readMoreSection.style.display="block";
@@ -186,15 +187,33 @@ readMoreBtn.addEventListener("click", ()=>{
     if(!musicStarted){musicStarted=true; bgMusic.volume=0.5; bgMusic.play().catch(()=>{}); muteBtn.style.display="block"; startSlideshow();}
 });
 
-// Mute
 muteBtn.addEventListener("click", ()=>{ isMuted=!isMuted; bgMusic.muted=isMuted; muteBtn.textContent=isMuted?"🔇":"🔊"; });
 
 // Slideshow
-const images = Array.from({length:44},(_,i)=>`https://gaganvirdi.github.io/ValentinesDay/${i+1}.${i<10? "JPEG":"JPG"}`.replace(".JPEG.JPG",".JPEG"));
+const images=[
+"https://gaganvirdi.github.io/ValentinesDay/1.JPEG","https://gaganvirdi.github.io/ValentinesDay/2.JPG","https://gaganvirdi.github.io/ValentinesDay/3.JPEG","https://gaganvirdi.github.io/ValentinesDay/4.JPG",
+"https://gaganvirdi.github.io/ValentinesDay/5.JPG","https://gaganvirdi.github.io/ValentinesDay/6.JPG","https://gaganvirdi.github.io/ValentinesDay/7.JPG","https://gaganvirdi.github.io/ValentinesDay/8.JPG",
+"https://gaganvirdi.github.io/ValentinesDay/9.JPG","https://gaganvirdi.github.io/ValentinesDay/10.JPG","https://gaganvirdi.github.io/ValentinesDay/11.JPEG","https://gaganvirdi.github.io/ValentinesDay/12.JPG",
+"https://gaganvirdi.github.io/ValentinesDay/13.JPEG","https://gaganvirdi.github.io/ValentinesDay/14.JPG","https://gaganvirdi.github.io/ValentinesDay/15.JPG","https://gaganvirdi.github.io/ValentinesDay/16.JPEG",
+"https://gaganvirdi.github.io/ValentinesDay/17.JPG","https://gaganvirdi.github.io/ValentinesDay/18.JPG","https://gaganvirdi.github.io/ValentinesDay/19.JPG","https://gaganvirdi.github.io/ValentinesDay/20.JPG",
+"https://gaganvirdi.github.io/ValentinesDay/21.JPEG","https://gaganvirdi.github.io/ValentinesDay/22.JPG","https://gaganvirdi.github.io/ValentinesDay/23.JPEG","https://gaganvirdi.github.io/ValentinesDay/24.JPG",
+"https://gaganvirdi.github.io/ValentinesDay/25.JPG","https://gaganvirdi.github.io/ValentinesDay/26.JPG","https://gaganvirdi.github.io/ValentinesDay/27.JPEG","https://gaganvirdi.github.io/ValentinesDay/28.JPEG",
+"https://gaganvirdi.github.io/ValentinesDay/29.JPG","https://gaganvirdi.github.io/ValentinesDay/30.JPEG","https://gaganvirdi.github.io/ValentinesDay/31.JPG","https://gaganvirdi.github.io/ValentinesDay/32.JPG",
+"https://gaganvirdi.github.io/ValentinesDay/33.JPEG","https://gaganvirdi.github.io/ValentinesDay/34.JPEG","https://gaganvirdi.github.io/ValentinesDay/35.JPEG","https://gaganvirdi.github.io/ValentinesDay/36.JPEG",
+"https://gaganvirdi.github.io/ValentinesDay/37.JPEG","https://gaganvirdi.github.io/ValentinesDay/38.JPEG","https://gaganvirdi.github.io/ValentinesDay/39.JPEG","https://gaganvirdi.github.io/ValentinesDay/40.JPEG",
+"https://gaganvirdi.github.io/ValentinesDay/41.JPEG","https://gaganvirdi.github.io/ValentinesDay/42.JPG","https://gaganvirdi.github.io/ValentinesDay/43.JPEG","https://gaganvirdi.github.io/ValentinesDay/44.JPG"
+];
+
 function startSlideshow(){
-    images.forEach(src=>{const img=document.createElement("img"); img.src=src; img.className="slide"; slideshow.appendChild(img);});
+    images.forEach(src=>{
+        const img=document.createElement("img");
+        img.src=src;
+        img.className="slide";
+        slideshow.appendChild(img);
+    });
     slideshow.firstChild.classList.add("active");
-    let idx=0; setInterval(()=>{
+    let idx=0;
+    setInterval(()=>{
         slideshow.children[idx].classList.remove("active");
         idx=(idx+1)%slideshow.children.length;
         slideshow.children[idx].classList.add("active");
