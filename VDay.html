@@ -1,141 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
 
-    <style>
-        * { box-sizing: border-box; }
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 16px;
-        }
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: Arial, sans-serif;
+    padding: 16px;
+}
 
-        .card {
-            background: white;
-            padding: 32px 24px;
-            border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            width: 100%;
-            max-width: 420px;
-        }
+.card {
+    background: white;
+    padding: 32px 24px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 420px;
+}
 
-        h1 {
-            margin-bottom: 20px;
-            color: #ff4d6d;
-            font-size: 24px;
-            line-height: 1.3;
-        }
+h1 { margin-bottom: 20px; color: #ff4d6d; font-size: 24px; line-height: 1.3; }
 
-        .gif {
-            width: 100%;
-            max-width: 220px;
-            margin-bottom: 20px;
-            border-radius: 16px;
-        }
+.gif { width: 100%; max-width: 220px; margin-bottom: 20px; border-radius: 16px; }
 
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 10px;
-        }
+.buttons { display: flex; justify-content: center; gap: 16px; margin-top: 10px; }
 
-        button {
-            padding: 12px 22px;
-            font-size: 16px;
-            border: none;
-            border-radius: 999px;
-            cursor: pointer;
-        }
+button {
+    padding: 12px 22px;
+    font-size: 16px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+}
 
-        #yesBtn { background-color: #ff4d6d; color: white; }
-        #noBtn { background-color: #adb5bd; color: white; }
+#yesBtn { background-color: #ff4d6d; color: white; }
+#noBtn { background-color: #adb5bd; color: white; }
 
-        #message { display: none; margin-top: 24px; color: #ff4d6d; font-size: 20px; }
+#message { display: none; margin-top: 24px; color: #ff4d6d; font-size: 20px; }
 
-        #readMoreSection { 
-            display: none; 
-            text-align: left; 
-            color: #444; 
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+#readMoreSection {
+    display: none; text-align: left; color: #444;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
 
-        #readMoreSection.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+#readMoreSection.show { opacity: 1; transform: translateY(0); }
 
-        .fade-text {
-            opacity: 0;
-            animation: fadeText 2s ease forwards;
-        }
+.fade-text { opacity: 0; animation: fadeText 2s ease forwards; }
+@keyframes fadeText { to { opacity: 1; } }
 
-        @keyframes fadeText { to { opacity: 1; } }
+.heart { position: fixed; bottom: -20px; font-size: 42px; animation: floatUp 3.5s linear forwards; }
+@keyframes floatUp { to { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
 
-        .heart { position: fixed; bottom: -20px; font-size: 42px; animation: floatUp 3.5s linear forwards; }
-        @keyframes floatUp { to { transform: translateY(-110vh) scale(1.5); opacity: 0; } }
+.confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
+@keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
 
-        .confetti { position: fixed; width: 20px; height: 32px; top: -20px; opacity: 0.95; animation: confettiFall 3.5s linear forwards; }
-        @keyframes confettiFall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+/* Slideshow */
+.slideshow {
+    width: 100%;
+    aspect-ratio: 1/1; /* 1:1 ratio */
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+}
 
-        /* Slideshow */
-        .slideshow {
-            width: 100%;
-            height: 240px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            position: relative;
-        }
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
 
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
+.slide.active { opacity: 1; }
 
-        .slide.active { opacity: 1; }
-
-        /* Mute button */
-        #muteBtn {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            background: #ffffff;
-            color: #ff4d6d;
-            border: 2px solid #ff4d6d;
-            border-radius: 12px;
-            width: 44px;
-            height: 44px;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            display: none;
-        }
-    </style>
+/* Mute button */
+#muteBtn {
+    position: fixed;
+    top: 16px; right: 16px;
+    background: #fff; color: #ff4d6d;
+    border: 2px solid #ff4d6d; border-radius: 12px;
+    width: 44px; height: 44px; font-size: 20px;
+    cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    display: none;
+}
+</style>
 </head>
 <body>
 
 <div class="card">
-
     <div id="page1">
         <h1>Ms. Suhasini Raina, will you be my Valentine? 💖</h1>
-
         <img id="mainGif" src="https://github.com/CodeKageHQ/Ask-out-your-Valentine/blob/main/images/image1.gif?raw=true" class="gif">
 
         <div class="buttons">
@@ -150,61 +116,10 @@
     </div>
 
     <div id="readMoreSection">
-
-        <!-- Slideshow -->
-        <div class="slideshow" id="slideshow">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/1.JPEG" class="slide active">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/2.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/3.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/4.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/5.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/6.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/7.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/8.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/9.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/10.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/11.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/12.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/13.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/14.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/15.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/16.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/17.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/18.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/19.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/20.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/21.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/22.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/23.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/24.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/25.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/26.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/27.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/28.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/29.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/30.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/31.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/32.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/33.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/34.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/35.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/36.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/37.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/38.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/39.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/40.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/41.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/42.JPG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/43.JPEG" class="slide">
-            <img src="https://gaganvirdi.github.io/ValentinesDay/44.JPG" class="slide">
-
-            
-            
-        </div>
+        <div class="slideshow" id="slideshow"></div>
 
         <h1>Happy Valentine’s Day ❤️</h1>
-
-       <p>Happy 1st Valentine’s Day to US! Since this is our big February 14th debut and I can’t be there to hand-deliver a card or annoy you in person, I had to do something a little hattke. Consider this my digital placeholder card until I can come see you.</p>
+        <p>Happy 1st Valentine’s Day to US! Since this is our big February 14th debut and I can’t be there to hand-deliver a card or annoy you in person, I had to do something a little hattke. Consider this my digital placeholder card until I can come see you.</p>
 
         <p>Happy Valentine’s Day to the girl who somehow makes my life a whole lot better, my screen time a whole lot higher and my FaceTimes a whole lot longer. I’m honestly so glad we finally decided to start dating after basically the whole world had already decided we were a couple. For once, I’m glad we actually listened to the rumors 😛</p>
 
@@ -214,142 +129,78 @@
 
         <p>So here’s to our first official Valentine’s Day and to many more VDays where I will annoy you in person, let you steal my food (especially popcorn), make you laugh, and remind you how special you are to me.</p>
 
-    <p class="heart">I love you, Suhasini Raina ❤️</p>
+        <p class="heart">I love you, Suhasini Raina ❤️</p>
     </div>
-
 </div>
 
 <button id="muteBtn">🔈</button>
-
 <audio id="bgMusic" src="Song.mp3" preload="auto" loop></audio>
 
 <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const message = document.getElementById("message");
-    const readMoreBtn = document.getElementById("readMoreBtn");
-    const bgMusic = document.getElementById("bgMusic");
-    const muteBtn = document.getElementById("muteBtn");
+const yesBtn = document.getElementById("yesBtn"),
+      noBtn = document.getElementById("noBtn"),
+      message = document.getElementById("message"),
+      readMoreBtn = document.getElementById("readMoreBtn"),
+      bgMusic = document.getElementById("bgMusic"),
+      muteBtn = document.getElementById("muteBtn"),
+      slideshow = document.getElementById("slideshow");
 
-    let musicStarted = false;
-    let isMuted = false;
+let musicStarted = false, isMuted = false, noClickCount = 0;
 
-    const reconsiderMessages = [
-        "Wait what?? Are you sure? 😟",
-        "Are you REALLY sure? 😳",
-        "Are you REALLY REALLY sure? 🥺",
-        "Pakka? Fir se soch le? 🙈",
-        "Akhri baar puch rha hu. Please maan ja? ❤️",
-        "Why are you giving me the cold shoulder? 🥺",
-        "Huh. Ab toh you're just being mean. 😤"
-    ];
+const reconsiderMessages = [
+    "Wait what?? Are you sure? 😟",
+    "Are you REALLY sure? 😳",
+    "Are you REALLY REALLY sure? 🥺",
+    "Pakka? Fir se soch le? 🙈",
+    "Akhri baar puch rha hu. Please maan ja? ❤️",
+    "Why are you giving me the cold shoulder? 🥺",
+    "Huh. Ab toh you're just being mean. 😤"
+];
 
-    let noClickCount = 0;
+// Create hearts/confetti
+function createHeart() { const h = document.createElement("div"); h.className="heart"; h.textContent="❤️"; h.style.left=Math.random()*100+"vw"; document.body.appendChild(h); setTimeout(()=>h.remove(),3000);}
+function startHearts(){const i=setInterval(createHeart,300); setTimeout(()=>clearInterval(i),4000);}
+function createConfetti(){const c=document.createElement("div"); c.className="confetti"; c.style.left=Math.random()*100+"vw"; c.style.backgroundColor=["#ff4d6d","#ffd166","#06d6a0","#118ab2","#ef476f"][Math.floor(Math.random()*5)]; document.body.appendChild(c); setTimeout(()=>c.remove(),3000);}
+function startConfetti(){const i=setInterval(createConfetti,120); setTimeout(()=>clearInterval(i),4000);}
 
-    function createHeart() {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = "❤️";
-        heart.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 3000);
-    }
+// YES button
+yesBtn.addEventListener("click", ()=>{
+    document.getElementById("mainGif").src="https://aayush-683.github.io/will-you-be-my-valentine/public/images/yes.gif";
+    message.style.display="block";
+    document.querySelector(".buttons").style.display="none";
+    startHearts();
+    startConfetti();
+});
 
-    function startHearts() {
-        const interval = setInterval(createHeart, 300);
-        setTimeout(() => clearInterval(interval), 4000);
-    }
+// NO button
+noBtn.addEventListener("click", ()=>{
+    if(noClickCount<reconsiderMessages.length) noBtn.textContent=reconsiderMessages[noClickCount++];
+});
 
-    function createConfetti() {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.backgroundColor = ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2", "#ef476f"][Math.floor(Math.random() * 5)];
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 3000);
-    }
+// Read more button
+readMoreBtn.addEventListener("click", ()=>{
+    document.getElementById("page1").style.display="none";
+    readMoreSection.style.display="block";
+    setTimeout(()=>readMoreSection.classList.add("show"),50);
+    readMoreSection.querySelectorAll("p,h2,label").forEach((el,i)=>{el.classList.add("fade-text"); el.style.animationDelay=`${i*0.4}s`;});
+    if(!musicStarted){musicStarted=true; bgMusic.volume=0.5; bgMusic.play().catch(()=>{}); muteBtn.style.display="block"; startSlideshow();}
+});
 
-    function startConfetti() {
-        const interval = setInterval(createConfetti, 120);
-        setTimeout(() => clearInterval(interval), 4000);
-    }
+// Mute
+muteBtn.addEventListener("click", ()=>{ isMuted=!isMuted; bgMusic.muted=isMuted; muteBtn.textContent=isMuted?"🔇":"🔊"; });
 
-    yesBtn.addEventListener("click", () => {
-        document.getElementById("mainGif").src = "https://aayush-683.github.io/will-you-be-my-valentine/public/images/yes.gif";
-        message.style.display = "block";
-        document.querySelector(".buttons").style.display = "none";
-        startHearts();
-        startConfetti();
-    });
-
-    noBtn.addEventListener("click", () => {
-        document.getElementById("mainGif").src = "https://aayush-683.github.io/will-you-be-my-valentine/public/images/no.gif";
-        if (noClickCount < reconsiderMessages.length) {
-            noBtn.textContent = reconsiderMessages[noClickCount++];
-        }
-    });
-
-    readMoreBtn.addEventListener("click", () => {
-        document.getElementById("page1").style.display = "none";
-
-        const section = document.getElementById("readMoreSection");
-        section.style.display = "block";
-        setTimeout(() => section.classList.add("show"), 50);
-
-        section.querySelectorAll("p, label, h2").forEach((el, i) => {
-            el.classList.add("fade-text");
-            el.style.animationDelay = `${i * 0.4}s`;
-        });
-
-        if (!musicStarted) {
-            musicStarted = true;
-            bgMusic.volume = 0.5;
-            bgMusic.play().catch(() => {});
-            muteBtn.style.display = "block";
-            startSlideshow();
-        }
-    });
-
-    muteBtn.addEventListener("click", () => {
-        if (isMuted) {
-            bgMusic.muted = false;
-            muteBtn.textContent = "🔊";
-            isMuted = false;
-        } else {
-            bgMusic.muted = true;
-            muteBtn.textContent = "🔇";
-            isMuted = true;
-        }
-    });
-
-    /* Slideshow logic */
-    function startSlideshow() {
-        const slides = document.querySelectorAll("#slideshow .slide");
-        let index = 0;
-
-        setInterval(() => {
-            slides[index].classList.remove("active");
-
-            if (slides[index].tagName === "VIDEO") {
-                slides[index].pause();
-            }
-
-            index = (index + 1) % slides.length;
-
-            slides[index].classList.add("active");
-
-            if (slides[index].tagName === "VIDEO") {
-                slides[index].currentTime = 0;
-                slides[index].play();
-            }
-        }, 4000);
-    }
+// Slideshow
+const images = Array.from({length:44},(_,i)=>`https://gaganvirdi.github.io/ValentinesDay/${i+1}.${i<10? "JPEG":"JPG"}`.replace(".JPEG.JPG",".JPEG"));
+function startSlideshow(){
+    images.forEach(src=>{const img=document.createElement("img"); img.src=src; img.className="slide"; slideshow.appendChild(img);});
+    slideshow.firstChild.classList.add("active");
+    let idx=0; setInterval(()=>{
+        slideshow.children[idx].classList.remove("active");
+        idx=(idx+1)%slideshow.children.length;
+        slideshow.children[idx].classList.add("active");
+    },4000);
+}
 </script>
 
 </body>
 </html>
-
-
-
-
-
